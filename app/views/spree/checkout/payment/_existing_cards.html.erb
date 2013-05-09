@@ -1,7 +1,7 @@
 <%= content_for :head do %>
   <%= javascript_tag do -%>
       <%== "var AUTH_TOKEN = #{form_authenticity_token.inspect};" if protect_against_forgery? %>
-      var original_button_text = "<%= t(:save_and_continue) %>";
+      var original_button_text = "<%= t(:place_order) %>";
   <% end -%>
 <% end %>
 
@@ -26,7 +26,7 @@
 
       // we are not on the 'my account' page, so let's plug in the
       // appropriate callback for when a card is deleted
-      creditCardDeleteCallback = paymentPageResetCreditCardOptions;  
+      creditCardDeleteCallback = paymentPageResetCreditCardOptions;
     });
   <% end %>
 
