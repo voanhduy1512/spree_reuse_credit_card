@@ -14,7 +14,7 @@
     <table class="existing-credit-card-list" style="width:545px;">
       <thead>
         <tr>
-          <th>Card Number(last four)</th>
+          <th>Card Number (last four)</th>
           <th>Exp Month</th>
           <th>Exp Year</th>
           <th></th>
@@ -27,7 +27,7 @@
             <td align="center"><%= card.month %></td>
             <td align="center"><%= card.year %></td>
             <td>
-            <%= link_to (icon('delete') + ' ' + t(:delete)),
+            <%= link_to (image_tag("icons/delete.png") + " " + t(:delete)),
                 spree.credit_card_url(card),
                 :remote => true, :method => :delete,
                 :confirm => 'Are you sure?' %>
