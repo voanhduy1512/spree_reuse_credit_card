@@ -4,11 +4,15 @@ module Spree
   CheckoutController.class_eval do
     include CardReuse
 
+    before_filter :setup_cards
+
     private
 
-    def before_payment
-      current_order.payments.destroy_all if request.put?
-      @cards = all_cards_for_user(@order.user)
+    def setup_cards
+      if @order.state == 'payment'
+        current_order.payments.destroy_all if request.put?
+        @cards = all_cards_for_user(@order.user)
+      end
     end
 
     # we are overriding this method in order to substitue in the exisiting card information
