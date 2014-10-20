@@ -40,11 +40,7 @@ function paymentPageResetCreditCardOptions() {
 }
 
 $(document).on('click', '#use_existing_card_no', function () {
-                                       // why am i having to hide the contents of the div as well???
-                                       $("#existing_cards").hide();
-                                       $("#existing_cards h4").hide();
-                                       $("#existing_cards table").hide();
-
+                                       $("[data-hook=card_name]").show();
                                        $("[data-hook=card_number]").show();
                                        $("[data-hook=card_expiration]").show();
                                        $("[data-hook=card_code]").show();
@@ -57,8 +53,9 @@ $(document).on('click', '#use_existing_card_no', function () {
 
 });
 
-$(document).on('click', '#use_existing_card_yes', function () {
+$(document).on('click', '#existing_cards', function () {
   useExistingCardsInit();
+  $("#use_existing_card_no").removeAttr('checked');
 });
 
 $(document).on('change', 'input[type=radio][name=existing_card]',function () {
@@ -91,10 +88,7 @@ function restoreContinueButton() {
 }
 
 function useExistingCardsInit() {
-  $("#existing_cards").show();
-  $("#existing_cards h4").show();
-  $("#existing_cards table").show();
-
+  $("[data-hook=card_name]").hide();
   $("[data-hook=card_number]").hide();
   $("[data-hook=card_expiration]").hide();
   $("[data-hook=card_code]").hide();
