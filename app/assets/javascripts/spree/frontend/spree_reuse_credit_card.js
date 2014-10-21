@@ -11,8 +11,9 @@ function displayCreditCardDeleteStatus(notice) {
       notice_div.html(notice);
       notice_div.show();
     } else {
-      $("#card_notice").html('<div class="flash notice">' + notice + '</div>');
+      $("#card_notice").html(notice + '<span class="close">X</span>');
     }
+    $("#card_notice").removeClass('hidden')
   }
 
   creditCardDeleteCallback();
@@ -27,10 +28,8 @@ function paymentPageResetCreditCardOptions() {
   // if we select a card, we enable the continue button, but if we then
   // delete it, we need to restore the button back to it's disabled state
   // did we just delete the last card?
-  if ($('.existing-credit-card-list tbody tr:visible').length == 0) {
+  if ($('#existing_cards > div:visible').length == 0) {
     $('#card_options').hide();
-    $('#existing_cards').hide();
-
     // 'new card'is our only option now
     $('#use_existing_card_no').click();
     // restoreContinueButton();
@@ -40,11 +39,7 @@ function paymentPageResetCreditCardOptions() {
 }
 
 $(document).on('click', '#use_existing_card_no', function () {
-                                       // why am i having to hide the contents of the div as well???
-                                       $("#existing_cards").hide();
-                                       $("#existing_cards h4").hide();
-                                       $("#existing_cards table").hide();
-
+                                       $("[data-hook=card_name]").show();
                                        $("[data-hook=card_number]").show();
                                        $("[data-hook=card_expiration]").show();
                                        $("[data-hook=card_code]").show();
@@ -57,8 +52,9 @@ $(document).on('click', '#use_existing_card_no', function () {
 
 });
 
-$(document).on('click', '#use_existing_card_yes', function () {
+$(document).on('click', '#existing_cards', function () {
   useExistingCardsInit();
+  $("#use_existing_card_no").removeAttr('checked');
 });
 
 $(document).on('change', 'input[type=radio][name=existing_card]',function () {
@@ -91,13 +87,12 @@ function restoreContinueButton() {
 }
 
 function useExistingCardsInit() {
-  $("#existing_cards").show();
-  $("#existing_cards h4").show();
-  $("#existing_cards table").show();
-
+  $("[data-hook=card_name]").hide();
   $("[data-hook=card_number]").hide();
   $("[data-hook=card_expiration]").hide();
   $("[data-hook=card_code]").hide();
+
+  $('#use_existing_card_no').removeAttr('checked');
 
   disableContinueButton();
 }
@@ -109,3 +104,7 @@ function disableContinueButton() {
     $(".form-buttons input[type=submit]").val('Please Select a Card to Use');
   }
 }
+
+$(document).on('click', 'span.close', function() {
+  $(this).parent().addClass('hidden');
+});

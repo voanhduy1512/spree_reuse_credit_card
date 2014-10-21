@@ -1,66 +1,50 @@
 <%= content_for :head do %>
   <%= javascript_tag do -%>
-      <%== "var AUTH_TOKEN = #{form_authenticity_token.inspect};" if protect_against_forgery? %>
-      var original_button_text = "<%= Spree.t(:place_order) %>";
+  <%== "var AUTH_TOKEN = #{form_authenticity_token.inspect};" if protect_against_forgery? %>
+var original_button_text = "<%= Spree.t(:place_order) %>";
   <% end -%>
 <% end %>
 
-<div id='card_notice'></div>
+<div id='card_notice' class='error hidden'></div>
+
 
 <% if @cards.present? %>
-  <div id="card_options">
-  <label>
-    <%= radio_button_tag 'use_existing_card', 'yes', true %>
-    Use an existing card on file
-  </label>
-  <label>
-    <%= radio_button_tag 'use_existing_card', 'no' %>
-    Use a new card
-  </label>
-  </div>
 
-<div id="existing_cards">
+  <div id="existing_cards">
   <%= javascript_tag do -%>
 
     $(document).ready(function () {
-
-      useExistingCardsInit();
 
       // we are not on the 'my account' page, so let's plug in the
       // appropriate callback for when a card is deleted
       creditCardDeleteCallback = paymentPageResetCreditCardOptions;
     });
-  <% end %>
+<% end %>
 
   <p class="field" data-hook="existing_cards">
-    <h4>Existing Cards</h4>
-    <table class="existing-credit-card-list">
-      <thead>
-        <tr>
-          <th>Card Number</th>
-          <th>Expiration</th>
-          <th>Use?</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @cards.each do |card| %>
-          <tr id="<%= dom_id(card,'spree')%>" class="<%= cycle('even', 'odd') %>">
-            <td>**** **** **** <%= card.last_digits %></td>
-            <td><%= card.month %>/<%= card.year %></td>
-            <td><%= radio_button_tag "existing_card", card.id, (@cards.size ==1) %></td> <%# if we only have 1 saved card, autoselect %>
-            <td>
-            <%= link_to (image_tag("icons/delete.png") + " " + t(:delete)),
-                spree.credit_card_url(card),
-                :remote => true, :method => :delete,
-                :confirm => 'Are you sure?' %>
-            </td>
-            <!-- #{param_prefix} -->
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
-  </p>
-</div> <!-- existing_cards -->
+  <% @cards.each do |card| %>
+    <div id="<%= dom_id(card,'spree')%>" class="row <%= cycle('even', 'odd') %>">
+      <div class='col-sm-5 card-type'>
+        <%= radio_button_tag "existing_card", card.id %>
+        <%= card.cc_type %>
+      </div>
+      <div class='col-sm-3'>
+        <%= "****#{card.last_digits}" %>
+      </div>
+      <div class='col-sm-2'>
+        <%= link_to 'Remove',
+          spree.credit_card_url(card),
+          :remote => true, :method => :delete,
+          :confirm => 'Are you sure?' %>
+      </div>
+      <!-- #{param_prefix} -->
+    </div>
+  <% end %>
+    </p>
+  </div> <!-- existing_cards -->
 
+  <div id="card_options">
+    <%= radio_button_tag 'use_existing_card', 'no', 'checked' %>
+    Use a new card
+  </div>
 <% end %>
