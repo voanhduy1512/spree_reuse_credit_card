@@ -58,8 +58,7 @@ $(document).on('change', 'input[type=radio][name=existing_card]',function () {
   if ($(this).is(':checked')) {
     restoreContinueButton();
   }
-}
-);
+});
 
 function restoreContinueButton() {
   $(".form-buttons input[type=submit]").attr('disabled',false);
