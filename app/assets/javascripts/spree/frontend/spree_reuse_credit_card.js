@@ -39,12 +39,9 @@ function paymentPageResetCreditCardOptions() {
 }
 
 $(document).on('click', '#use_existing_card_no', function () {
-                                       $("[data-hook=card_name]").show();
-                                       $("[data-hook=card_number]").show();
-                                       $("[data-hook=card_expiration]").show();
-                                       $("[data-hook=card_code]").show();
+  $('#credit-card-form').show();
 
-                                       restoreContinueButton();
+  restoreContinueButton();
 
   // if we don't do this, we'll accidentally submit our 'use existing'
   // id and we won't use a new card
@@ -58,28 +55,11 @@ $(document).on('click', '#existing_cards', function () {
 });
 
 $(document).on('change', 'input[type=radio][name=existing_card]',function () {
-                                                  if ($(this).is(':checked')) {
-                                                    restoreContinueButton();
-                                                  }
-                                                }
-                                               );
-
-// when we select a different payment method, make sure we re-enable the continue button
-// so find every payment method radio that's not a credit card method
-
-$(document).on('click','input[type="radio"][name="order[payments_attributes][][payment_method_id]"]', function() {
-  ($('#payment-methods li')).hide();
-  if (this.checked) {
-    if ($('#payment_method_' + this.value).find('#existing_cards').length > 0) {
-      disableContinueButton();
-    } else {
-      restoreContinueButton();
-    }
-
-    return ($('#payment_method_' + this.value)).show();
+  if ($(this).is(':checked')) {
+    restoreContinueButton();
   }
-});
-
+}
+);
 
 function restoreContinueButton() {
   $(".form-buttons input[type=submit]").attr('disabled',false);
@@ -87,10 +67,7 @@ function restoreContinueButton() {
 }
 
 function useExistingCardsInit() {
-  $("[data-hook=card_name]").hide();
-  $("[data-hook=card_number]").hide();
-  $("[data-hook=card_expiration]").hide();
-  $("[data-hook=card_code]").hide();
+  $('#credit-card-form').hide();
 
   $('#use_existing_card_no').removeAttr('checked');
 
