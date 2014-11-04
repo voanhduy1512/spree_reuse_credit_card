@@ -3,7 +3,7 @@ module CardReuse
     return nil unless user
 
     credit_cards = user.credit_cards
-    credit_cards.delete_if { |card| valid_for_reuse? card }
+    credit_cards.delete_if { |card| unvalid_for_reuse? card }
   end
 
   def card_expired?(payment_source)
@@ -13,8 +13,8 @@ module CardReuse
     exp < now
   end
 
-  def valid_for_reuse?(payment_source)
+  def unvalid_for_reuse?(payment_source)
     # some payment gateways use only one of these?  stripe possibly?
-    !(payment_source.nil? || (payment_source.gateway_payment_profile_id.nil? && payment_source.gateway_customer_profile_id.nil?) || payment_source.deleted? || card_expired?(payment_source))
+    payment_source.nil? || (payment_source.gateway_payment_profile_id.nil? && payment_source.gateway_customer_profile_id.nil?) || payment_source.deleted? || card_expired?(payment_source)
   end
 end
